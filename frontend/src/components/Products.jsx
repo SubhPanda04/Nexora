@@ -27,9 +27,7 @@ const Products = ({ onAddToCart }) => {
 
   const handleAddToCart = async (productId) => {
     try {
-      console.log('Adding product to cart:', productId);
       await onAddToCart(productId);
-      console.log('Product added successfully');
     } catch (error) {
       console.error('Error adding to cart:', error);
       alert('Failed to add item to cart. Please try again.');
@@ -56,14 +54,14 @@ const Products = ({ onAddToCart }) => {
   }
 
   return (
-    <div className="flex-1 space-y-8">
-      <div className="space-y-2">
+    <div className="flex-1 space-y-8 h-full flex flex-col">
+      <div className="space-y-2 flex-shrink-0">
         <h2 className="text-3xl font-thin text-slate-900 tracking-tight">Products</h2>
         <p className="text-sm text-slate-500 tracking-wide uppercase">Handpicked Selection</p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 flex-1 overflow-auto">
         {products.map(product => (
-          <div key={product.id} className="group relative flex-1">
+          <div key={product.id} className="group relative">
             <div className="absolute inset-0 bg-gradient-to-r from-slate-100 to-slate-50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative bg-white border border-slate-200/60 rounded-xl p-8 hover:border-slate-300/80 transition-all duration-300 hover:shadow-lg hover:shadow-slate-200/50 h-full flex flex-col">
               <div className="space-y-4 flex-1">

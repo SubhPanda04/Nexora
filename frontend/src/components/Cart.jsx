@@ -14,12 +14,8 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
     try {
       setLoading(true);
       setError(null);
-      console.log('Cart: Fetching cart data...');
-      const baseURL = process.env.NODE_ENV === 'production'
-        ? '' 
-        : 'http://localhost:5000';
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${baseURL}/api/cart`);
-      console.log('Cart: Received cart data:', response.data);
       setCart(response.data);
     } catch (error) {
       console.error('Error fetching cart:', error);
@@ -31,9 +27,7 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
 
   const removeItem = async (productId) => {
     try {
-      const baseURL = process.env.NODE_ENV === 'production'
-        ? '' // Use relative URLs in production (same domain)
-        : 'http://localhost:5000';
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       await axios.delete(`${baseURL}/api/cart/${productId}`);
       fetchCart();
     } catch (error) {
@@ -84,15 +78,15 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
   }
 
   return (
-    <div className="flex-1 space-y-8">
-      <div className="space-y-2">
+    <div className="flex-1 space-y-8 h-full flex flex-col">
+      <div className="space-y-2 flex-shrink-0">
         <h2 className="text-3xl font-thin text-slate-900 tracking-tight">Shopping Cart</h2>
         <p className="text-sm text-slate-500 tracking-wide uppercase">
           {cart.items.length} {cart.items.length === 1 ? 'item' : 'items'} selected
         </p>
       </div>
       {cart.items.length === 0 ? (
-        <div className="text-center py-16 space-y-3">
+        <div className="text-center py-16 space-y-3 flex-1 flex flex-col justify-center">
           <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
             <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -102,8 +96,8 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
           <p className="text-xs text-slate-500 tracking-widest uppercase">Explore our collection</p>
         </div>
       ) : (
-        <>
-          <div className="space-y-4">
+        <div className="flex-1 flex flex-col">
+          <div className="space-y-4 flex-1 overflow-auto">
             {cart.items.map(item => (
               <div key={item.productId} className="group relative bg-white border border-slate-200 rounded-xl p-6 hover:border-slate-300 hover:shadow-lg transition-all duration-300">
                 <div className="flex items-center justify-between">
@@ -144,7 +138,7 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
               </div>
             ))}
           </div>
-          <div className="border-t border-slate-200 pt-8 space-y-6">
+          <div className="border-t border-slate-200 pt-8 space-y-6 flex-shrink-0">
             <div className="flex justify-between items-baseline">
               <span className="text-3xl font-thin text-slate-900">Total</span>
               <div className="text-right">
@@ -159,7 +153,7 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
               Proceed to Checkout →
             </button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
