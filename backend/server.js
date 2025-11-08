@@ -10,13 +10,14 @@ const PORT = process.env.PORT || 5000;
 
 const corsOptions = {
   origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
     const allowedOrigins = [
-      'http://localhost:5173', 
+      'http://localhost:5173',
       'http://localhost:3000', 
       /^https:\/\/.*\.vercel\.app$/,
+      /^https:\/\/.*\.onrender\.com$/, 
     ];
-
-    if (!origin) return callback(null, true);
 
     const isAllowed = allowedOrigins.some(allowedOrigin => {
       if (typeof allowedOrigin === 'string') {
@@ -28,6 +29,7 @@ const corsOptions = {
     if (isAllowed) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
