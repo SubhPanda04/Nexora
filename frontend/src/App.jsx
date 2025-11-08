@@ -5,7 +5,7 @@ import Checkout from './components/Checkout';
 import axios from 'axios';
 import './App.css';
 
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 function App() {
   const [showCheckout, setShowCheckout] = useState(false);

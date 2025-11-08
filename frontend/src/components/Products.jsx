@@ -14,7 +14,8 @@ const Products = ({ onAddToCart }) => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get('http://localhost:5000/api/products');
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const response = await axios.get(`${baseURL}/api/products`);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);

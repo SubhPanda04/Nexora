@@ -15,7 +15,10 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
       setLoading(true);
       setError(null);
       console.log('Cart: Fetching cart data...');
-      const response = await axios.get('http://localhost:5000/api/cart');
+      const baseURL = process.env.NODE_ENV === 'production'
+        ? '' 
+        : 'http://localhost:5000';
+      const response = await axios.get(`${baseURL}/api/cart`);
       console.log('Cart: Received cart data:', response.data);
       setCart(response.data);
     } catch (error) {
@@ -28,7 +31,10 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
 
   const removeItem = async (productId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/${productId}`);
+      const baseURL = process.env.NODE_ENV === 'production'
+        ? '' // Use relative URLs in production (same domain)
+        : 'http://localhost:5000';
+      await axios.delete(`${baseURL}/api/cart/${productId}`);
       fetchCart();
     } catch (error) {
       console.error('Error removing item:', error);
@@ -42,9 +48,10 @@ const Cart = ({ onCheckout, refreshTrigger }) => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:5000/api/cart/${productId}`);
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      await axios.delete(`${baseURL}/api/cart/${productId}`);
       await new Promise(resolve => setTimeout(resolve, 100));
-      await axios.post('http://localhost:5000/api/cart', { productId, qty: newQty });
+      await axios.post(`${baseURL}/api/cart`, { productId, qty: newQty });
       fetchCart();
     } catch (error) {
       console.error('Error updating quantity:', error);
