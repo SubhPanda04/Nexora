@@ -74,7 +74,9 @@ const seedProductsFromAPI = async () => {
   }
 };
 
-seedProductsFromAPI();
+setTimeout(() => {
+  seedProductsFromAPI();
+}, 5000);
 
 app.get('/api/products', async (req, res) => {
   try {
