@@ -39,7 +39,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-
 connectDB();
 
 const seedProductsFromAPI = async () => {
@@ -76,7 +75,7 @@ const seedProductsFromAPI = async () => {
 
 setTimeout(() => {
   seedProductsFromAPI();
-}, 5000);
+}, 15000);
 
 app.get('/api/products', async (req, res) => {
   try {
